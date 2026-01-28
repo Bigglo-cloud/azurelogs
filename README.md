@@ -36,7 +36,8 @@ This guide covers the migration from a legacy MySQL-based logging system to Azur
 ### Architecture Overview
 
 ```
-[Placeholder for Mermaid diagram - Architecture Flow]
+<img width="8191" height="1203" alt="Start Decision Options Flow-2026-01-28-182637" src="https://github.com/user-attachments/assets/b0a1bd75-c03a-46e7-b45c-f5c5309fb9c3" />
+
 
 Components:
 - API Controller → Business Logic → ApiTelemetryService
@@ -894,11 +895,6 @@ namespace YourTravelApi.IntegrationTests
 **Expected Result:**  
 Within 1-2 seconds, you'll see your custom event appear with a count of 1.
 
-```
-[Placeholder for Mermaid diagram - Live Metrics Verification Flow]
-```
-
----
 
 ### Step 2: Query Logs in Log Analytics
 
@@ -992,9 +988,10 @@ customEvents
 ### Issue 1: No Events Appearing in Live Metrics
 
 ```
-[Placeholder for Mermaid diagram - Troubleshooting Decision Tree]
 
 Decision flow:
+<img width="3870" height="3205" alt="Start Decision Options Flow-2026-01-28-182921" src="https://github.com/user-attachments/assets/d09c2fc9-3539-4211-ad87-1219b60ccbd7" />
+
 1. Check connection string → 2. Check network → 3. Check DI registration → 4. Force flush test
 ```
 
