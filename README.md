@@ -983,13 +983,13 @@ customEvents
 ---
 
 ## Troubleshooting
+<img width="3870" height="3205" alt="Start Decision Options Flow-2026-01-28-182921" src="https://github.com/user-attachments/assets/2cef8f7f-82de-4abf-8b9c-505d50ec7d64" />
 
 ### Issue 1: No Events Appearing in Live Metrics
 
 ```
 
 Decision flow:
-<img width="3870" height="3205" alt="Start Decision Options Flow-2026-01-28-182921" src="https://github.com/user-attachments/assets/d09c2fc9-3539-4211-ad87-1219b60ccbd7" />
 
 1. Check connection string → 2. Check network → 3. Check DI registration → 4. Force flush test
 ```
