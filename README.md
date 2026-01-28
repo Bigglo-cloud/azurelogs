@@ -663,8 +663,8 @@ public class SearchAvailabilityController : ControllerBase
 
 ### How TelemetryClient Works Under the Hood
 
-```
-[Placeholder for Mermaid diagram - TelemetryClient Internal Flow]
+<img width="5694" height="5679" alt="Untitled diagram-2026-01-28-182105" src="https://github.com/user-attachments/assets/36069ac9-4b82-4559-b499-9df16fd54b0f" />
+
 
 Flow:
 1. TrackEvent() called → Add to in-memory channel (~microseconds)
@@ -1980,8 +1980,8 @@ Before disabling MySQL completely, verify:
 
 **Document Version:** 2.0  
 **Last Updated:** January 28, 2026  
-**Maintained By:** Azure Architecture Team  
-**Feedback:** Please submit feedback via the project's issue tracker
+**Maintained By:** Bigglo.pl - Arkady Zagdan  
+**Feedback:** kontakt@bigglo.pl
 
 ---
 
