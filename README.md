@@ -34,11 +34,10 @@ This guide covers the migration from a legacy MySQL-based logging system to Azur
 5. **Production-grade error handling** and resilience
 
 ### Architecture Overview
+<img width="8191" height="1203" alt="Start Decision Options Flow-2026-01-28-182637" src="https://github.com/user-attachments/assets/206df9e1-e8ea-4eae-9392-d21411d9f0d2" />
 
+  
 ```
-<img width="8191" height="1203" alt="Start Decision Options Flow-2026-01-28-182637" src="https://github.com/user-attachments/assets/b0a1bd75-c03a-46e7-b45c-f5c5309fb9c3" />
-
-
 Components:
 - API Controller → Business Logic → ApiTelemetryService
 - TelemetryClient → In-Memory Buffer → Batch Processing
