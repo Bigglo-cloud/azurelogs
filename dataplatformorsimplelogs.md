@@ -224,117 +224,10 @@ Enterprise DWH:
 
 ### Part A: Show Multi-Source Integration (5 min)
 
-**Screen share BigQuery console:**
-
-1. Show existing project with multiple datasets:
-   - ga4_analytics (from Google Analytics)
-   - facebook_ads (from Facebook)
-   - stripe_payments (from Stripe)
-   - api_logs (simulated their data)
-
-2. Point out:
-   "See these 4 sources? I didn't write any code.
-    I just enabled connectors. They auto-sync."
-
-3. Show connector config:
-   - Click "Add Data" → "External data source"
-   - Show GA4 connector settings
-   - Point out: "Schedule: Daily automatic refresh"
 
 ### Part B: Cross-Source Query (5 min)
 
-**Run live query showing value of unified data:**
 
-```sql
-WITH api_searches AS (
-  SELECT 
-    user_id,
-    search_destination,
-    search_date,
-    vehicles_found
-  FROM api_logs.searches
-  WHERE search_date >= '2026-01-01'
-),
-marketing_source AS (
-  SELECT
-    user_pseudo_id as user_id,
-    traffic_source.source as channel,
-    event_date
-  FROM ga4_analytics.events
-  WHERE event_name = 'first_visit'
-),
-conversions AS (
-  SELECT
-    customer_id as user_id,
-    amount,
-    created_date
-  FROM stripe_payments.charges
-  WHERE status = 'succeeded'
-)
-
-SELECT 
-  m.channel,
-  COUNT(DISTINCT a.user_id) as searches,
-  COUNT(DISTINCT c.user_id) as conversions,
-  ROUND(COUNT(DISTINCT c.user_id) * 100.0 / COUNT(DISTINCT a.user_id), 2) as conversion_rate,
-  ROUND(SUM(c.amount), 2) as revenue
-FROM api_searches a
-LEFT JOIN marketing_source m ON a.user_id = m.user_id
-LEFT JOIN conversions c ON a.user_id = c.user_id
-GROUP BY m.channel
-ORDER BY revenue DESC
-```
-
-**Expected result:**
-
-```
-Channel          | Searches | Conversions | Conv Rate | Revenue
-Google Organic   | 45,203   | 3,891       | 8.61%     | €453,201
-Facebook Ads     | 23,104   | 1,205       | 5.21%     | €145,032
-Direct           | 18,992   | 2,103       | 11.07%    | €298,445
-```
-
-**Key message:** "This query answers: Which channels drive revenue? Try doing this with DuckDB across 3 separate data sources."
-
-### Part C: Show Query Performance (3 min)
-
-1. Show query history:
-   - This query scanned 2.3 GB
-   - Completed in 3.2 seconds
-   - Cost: $0.01
-
-2. Run a heavy aggregation:
-   - Scan full year of data
-   - Multiple joins
-   - Complex calculations
-   - Still returns in <10 seconds
-
-3. Point out:
-   "BigQuery processed 50GB of data in 8 seconds.
-    With DuckDB on a VM, this would take minutes
-    and require you to size the VM properly."
-
-### Part D: Show Costs (2 min)
-
-**Navigate to Billing:**
-
-Show actual monthly costs for demo project:
-- Storage: 120 GB = $2.40/month
-- Queries: 1.5 TB scanned = $7.50/month
-- Total: $9.90/month
-
-**Key message:**
-```
-This project has:
- - 4 data sources
- - 120 GB of data
- - ~500 queries/month
- - 5 active users
- 
- Total cost: $10/month
-```
-
----
 
 ## 6. DECISION FRAMEWORK (5 min)
 
@@ -386,15 +279,13 @@ Enterprise DWH Cost:
 
 ---
 
-## 7. SPECIFIC RECOMMENDATION FOR THEM (5 min)
-
+## 7. SPECIFIC RECOMMENDATION 
 ### Slide: Your Situation
 
 ```
 Travel Company Facts:
 - Azure infrastructure ✅
 - Multiple potential data sources (API, website, marketing, CRM)
-- CEO on this call (company cares about analytics)
 - Growing startup (not side project)
 - Developer time is scarce
 - Currently stuck with slow MySQL JSON parsing
@@ -406,12 +297,12 @@ Red flags for DuckDB:
 🚩 Developer already busy = no time for ETL maintenance
 ```
 
-### Slide: My Recommendation
+###  My Recommendation
 
 ```
-Start with Azure Synapse Serverless:
+Start with Azure Synapse/BigQuery Serverless:
 
-Why Synapse:
+Why :
 ✅ Azure-native (you're already there)
 ✅ Serverless (pay per query, like BigQuery)
 ✅ SQL interface (familiar to developers)
@@ -431,7 +322,6 @@ Cost grows with value, not upfront.
 ### Slide: If You Still Want DuckDB
 
 ```
-I'll help either way, but know the trade-offs:
 
 You'll need to build:
 - ETL pipelines for each source
@@ -452,41 +342,6 @@ Ask yourself: Is this the best use of developer time?
 
 ---
 
-## 8. Q&A HANDLING
-
-### Expected Pushback & Responses
-
-**"But DuckDB is free!"**
-
-→ "Show me the math: $50 VM + 20 hours developer time/month at €50/hour = $1,050/month hidden cost vs $30/month Synapse"
-
-**"We can build ETL ourselves"**
-
-→ "Yes, you can. Question is: should you? Is data plumbing your competitive advantage or is it your booking algorithm?"
-
-**"We're a startup, need to save money"**
-
-→ "Startups die from running out of time, not money. Synapse buys you time to focus on customers."
-
-**"What if we outgrow Synapse?"**
-
-→ "Synapse scales to petabytes. By the time you outgrow it, you'll have a data team. DuckDB you'll outgrow in 6 months."
-
-**"Can we start with DuckDB and migrate later?"**
-
-→ "Yes, but migration costs are high. Why not start with serverless Synapse that costs the same but scales?"
-
-**"Our colleague recommended DuckDB"**
-
-→ "DuckDB is excellent technology. For the right use case. Single analyst, local files, exploratory work - perfect. Multi-team company analytics platform - different tool for different job."
-
-**"What about costs if we scale?"**
-
-→ "With Synapse Serverless, you only pay for queries you run. If you run 100 queries/month today and 1000 queries/month next year, you pay 10x more. But you also have 10x more value. With DuckDB VM, you pay for capacity whether you use it or not."
-
----
-
-## 9. CLOSING (2 min)
 
 ### Slide: The Real Question
 
@@ -511,7 +366,7 @@ Buy (Synapse/BigQuery):
 For a travel company, which makes more sense?
 ```
 
-### Slide: Next Steps
+### Next Steps
 
 ```
 Decision time:
@@ -556,31 +411,6 @@ What questions do you have?
 5. **End with choice** - Provide clear options, recommend one, respect their decision
 
 ---
-
-## BACKUP SLIDES (if time allows)
-
-### Real Customer Example
-
-```
-Similar company case study:
-- E-commerce startup, 50 employees
-- Started with DuckDB for "cost savings"
-- After 8 months:
-  - 1 developer spending 40% time on ETL
-  - 3 data sources, wanted to add 5 more
-  - Power BI integration breaking weekly
-  - CEO frustrated with "we can't answer that yet"
-- Migrated to Snowflake:
-  - Migration took 1 week
-  - Added 5 sources in 2 days
-  - Developer time freed up for product
-  - CEO happy with insights
-
-Cost comparison:
-- DuckDB: $0 service + $4,000/month developer time = $4,000/month
-- Snowflake: $200/month service + $200/month developer time = $400/month
-- Savings: $3,600/month
-```
 
 ### Technical Architecture Comparison
 
@@ -636,4 +466,3 @@ You maintain: API event publishing (already doing this)
 
 ---
 
-**END OF PRESENTATION GUIDE**
