@@ -24,35 +24,9 @@
 ---
 
 ## 1. Architecture Overview
+<img width="7523" height="520" alt="Start Decision Options Flow-2026-02-10-135235" src="https://github.com/user-attachments/assets/2de5b458-bbeb-41ca-8aa5-badca34e0b3f" />
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        UPSTREAM (this doc)                         │
-│                                                                     │
-│  ┌──────────┐      ┌───────────────────┐      ┌──────────────────┐ │
-│  │   App    │ ───► │  Azure Queue      │ ───► │  Azure Function  │ │
-│  │  (API)   │ HTTP │  Storage          │ timer│  (Collector)     │ │
-│  │          │ PUT  │  "api-logs-queue"  │ 10m  │                  │ │
-│  └──────────┘      └───────────────────┘      └────────┬─────────┘ │
-│                                                         │           │
-│                                                         ▼           │
-│                                              ┌──────────────────┐  │
-│                                              │  Data Lake Gen2  │  │
-│                                              │  (raw logs)      │  │
-│                                              │  /logs/YYYY/MM/  │  │
-│                                              │    DD/HH-mm.json │  │
-│                                              └──────────────────┘  │
-└─────────────────────────────────────────────────────────────────────┘
-                                                         │
-                              ┌───────────────────────────┘
-                              ▼
-               ┌──────────────────────────┐
-               │     DOWNSTREAM           │
-               │  (separate doc)          │
-               │  Data Factory → Synapse  │
-               │  → Power BI              │
-               └──────────────────────────┘
-```
+
 
 ### Diagram descriptions for Mermaid generation
 
