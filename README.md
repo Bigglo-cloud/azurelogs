@@ -730,6 +730,11 @@ However, validate at the application level that required fields are present befo
 
 ## 7. Error Handling & Resilience
 
+<img width="8192" height="5344" alt="Start Decision Options Flow-2026-02-10-140022" src="https://github.com/user-attachments/assets/1ae7efa0-9b31-426c-9279-070857c5ae9a" />
+
+
+
+
 ### 7.1 Failure Modes & Mitigations
 
 | Failure | Impact | Mitigation |
