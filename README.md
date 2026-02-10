@@ -64,6 +64,9 @@ You'll want to create the following Mermaid diagrams:
 
 ### 2.1 Resources to Create
 
+<img width="4589" height="1970" alt="Start Decision Options Flow-2026-02-10-140347" src="https://github.com/user-attachments/assets/9ed9a813-520e-4608-89d2-a3bf6526fe33" />
+
+
 | Resource | SKU / Tier | Name Convention | Notes |
 |----------|-----------|-----------------|-------|
 | Resource Group | — | `rg-logs-analytics-{env}` | e.g., `rg-logs-analytics-prod` |
