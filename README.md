@@ -27,35 +27,6 @@
 <img width="7523" height="520" alt="Start Decision Options Flow-2026-02-10-135235" src="https://github.com/user-attachments/assets/2de5b458-bbeb-41ca-8aa5-badca34e0b3f" />
 
 
-
-### Diagram descriptions for Mermaid generation
-
-You'll want to create the following Mermaid diagrams:
-
-1. **Main data flow (flowchart LR):** Application API → Azure Queue Storage → Azure Function (timer, 10 min) → Data Lake Gen2 → [downstream boundary]. Label the edges with: "HTTP PUT (per log event)", "QueueTrigger / timer", "Blob write (batch JSON/NDJSON)".
-
-2. **Sequence diagram — happy path:** Application sends log message to Queue. Queue stores message. Function triggers on timer. Function reads batch of messages (up to 32). Function writes NDJSON file to Data Lake. Function deletes processed messages from Queue. Repeat.
-
-3. **Sequence diagram — failure path:** Application sends log to Queue. Function reads messages. Function fails to write to Data Lake. Messages become visible again in Queue after visibility timeout (10 min). Next Function invocation retries. After 5 failures, message goes to poison queue `api-logs-queue-poison`.
-
-4. **Component diagram:** Show Azure Resource Group containing: Storage Account (with Queue + Data Lake Gen2 containers), Function App (Consumption plan), Application Insights, Key Vault (connection strings). Draw arrows between them.
-
-5. **Data Lake folder structure (tree diagram):** Show the partition layout:
-   ```
-   logs/
-   ├── 2026/
-   │   ├── 02/
-   │   │   ├── 10/
-   │   │   │   ├── 08-00.ndjson
-   │   │   │   ├── 08-10.ndjson
-   │   │   │   ├── 08-20.ndjson
-   │   │   │   └── ...
-   │   │   ├── 11/
-   │   │   └── ...
-   │   └── 03/
-   └── ...
-   ```
-
 ---
 
 <img width="5105" height="3975" alt="Start Decision Options Flow-2026-02-10-135610" src="https://github.com/user-attachments/assets/3f301055-351b-49ed-97e0-8c341193b4cb" />
