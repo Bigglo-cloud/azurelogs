@@ -84,6 +84,9 @@ FUNC="func-logs-collector-prod"
 # 1. Resource Group
 az group create --name $RG --location $LOCATION
 
+<img width="5105" height="3975" alt="Start Decision Options Flow-2026-02-10-135610" src="https://github.com/user-attachments/assets/ad135834-91cc-4ead-ba4b-cb0b2ddddfd8" />
+
+
 # 2. Storage Account (with Data Lake Gen2 enabled)
 az storage account create \
   --name $STORAGE \
